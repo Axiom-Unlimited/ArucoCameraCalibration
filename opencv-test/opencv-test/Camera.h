@@ -23,22 +23,19 @@ private:
 	std::mutex mtx;
 
 	int _captureId;
+	bool halt;
 	cv::VideoCapture							_videoCapture;
-	std::vector<cv::Point2f> 					_keyPoints;
-	std::vector<cv::Point3d>					_normVectors;
-	std::vector<std::shared_ptr<Camera>>		_pCameras;
-	std::vector<cv::Vec3f>						_epilines;
+
+	std::vector<std::shared_ptr<Camera>>		_pCameras{};
 
 	cv::Mat										_intrinsicParams;
 	cv::Mat										_distCoeffs;
 	cv::Mat										_rotationMat;
-	cv::Vec3d									_translationVecs;
+	cv::Mat									_translationVecs;
 
 	cv::Mat										_currentFrame;
-	cv::Mat										_blobFrame;
 
-	std::vector<RelationToNCamera>				_cameraRelations;	
-	std::vector<structs::EpiPair<cv::Vec3d>>	_camRelEpilines;
+	std::vector<RelationToNCamera>				_cameraRelations{};	
 
 	cv::FileStorage								_fileStorage;
 
@@ -46,29 +43,21 @@ private:
 	std::future<void>							_futureTask;
 	std::mutex									_mutex;
 
-	CVBLobeDetector								_blobDetector;
 
-
-	void CameraRun();
-	bool addBLobsToFrame(cv::Mat& imgOut,std::vector<cv::KeyPoint> blobPoints);
-	void drawEpilines(cv::Mat& input, std::vector<cv::Vec3f>& epilines);
+	void capture_frames();
 
 public:
-
-	std::atomic<cv::Mat> rot_to_AR;
-
+	
 	// getters for flags;
 	void settingsSet();
-	bool ifSettingsSet();
+	bool ifSettingsSet() const;
 	// constructor and destructor
-	Camera(int captureId, cv::SimpleBlobDetector::Params blobParams);
+	Camera(int captureId);
 
 	cv::Mat &getIntrinsicParams();
 	cv::Mat &getDistCoeffs();
 	cv::Mat &getRotMat();
-	cv::Vec3d &getTransVec();
-
-	void getKeyPoints(std::vector<cv::Point2f>& keypoints);
+	cv::Mat &getTransVec();
 
 	bool getCorrectedFrames(cv::Mat &mat);
 
@@ -76,7 +65,7 @@ public:
 
 	void addRelation(RelationToNCamera relToCam);
 
-	int getCapID();
+	int getCapID() const;
 
 	void setRotMat(cv::Mat& rot);
 
@@ -86,15 +75,13 @@ public:
 
 	void setIntrMat(cv::Mat& intr);
 
-	void getCameraRelations(std::vector<RelationToNCamera>& rel);
+	void getCameraRelations(std::vector<RelationToNCamera>& rel) const;
 
 	void setConfigFile(std::string file);
 
 	void saveConfig();
 
-	void addEpilines(std::vector<cv::Vec3f>& epilines);
+	void haltThread() ;
 
-	void haltThread();
-
-	void reseumeThread();
+	void resumeThread();
 };

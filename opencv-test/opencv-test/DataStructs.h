@@ -9,8 +9,6 @@ namespace structs
 		int Designator;
 		cv::Mat RotationTo;
 		cv::Mat TranslationTo;
-		cv::Mat FundamentalMatTo;
-		cv::Mat EssentialMatTo;
 	};
 
 	template<typename T>

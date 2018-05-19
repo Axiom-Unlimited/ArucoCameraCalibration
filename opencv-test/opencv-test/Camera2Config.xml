@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<Relations>
+  <CameraRelation0>
+    <Designator>0</Designator>
+    <RotationTo type_id="opencv-matrix">
+      <rows>3</rows>
+      <cols>3</cols>
+      <dt>d</dt>
+      <data>
+        9.9975185588588422e-01 -2.2275929967019072e-02
+        9.7963435110484816e-05 2.2275964643019248e-02
+        9.9975179203687781e-01 -3.6839961245879185e-04
+        -8.9732675838786709e-05 3.7049042628014748e-04
+        9.9999992734244281e-01</data></RotationTo>
+    <TranslationTo type_id="opencv-matrix">
+      <rows>3</rows>
+      <cols>1</cols>
+      <dt>d</dt>
+      <data>
+        6.4709163915873447e+00 -2.4635150814348012e+00
+        -1.0038202714494626e-02</data></TranslationTo>
+    <FundamentalMatTo type_id="opencv-matrix">
+      <rows>3</rows>
+      <cols>3</cols>
+      <dt>d</dt>
+      <data>
+        -2.0754181728660501e-01 -4.2580140362341501e+00
+        1.1498075216476423e+03 4.4129961619763947e+00
+        1.0145871040034478e+00 3.0201959618059468e+03
+        -1.2167983347382919e+03 -2.9938330904021104e+03 1.</data></FundamentalMatTo>
+    <EssentialMatTo type_id="opencv-matrix">
+      <rows>3</rows>
+      <cols>3</cols>
+      <dt>d</dt>
+      <data>
+        4.4466844897389339e-04 9.1230023999771034e-03
+        -2.4635186005118030e+00 -9.4550591506285236e-03
+        -2.1738022716795658e-03 -6.4709169048031869e+00
+        2.6070496794142413e+00 6.4144331691835186e+00
+        -2.1425486910901827e-03</data></EssentialMatTo></CameraRelation0></Relations>
+<Settings>
+  <intrinsicParam type_id="opencv-matrix">
+    <rows>3</rows>
+    <cols>3</cols>
+    <dt>d</dt>
+    <data>
+      6.5547093349715237e+02 0. 3.2329847036869330e+02 0.
+      6.5278705731331854e+02 2.1645824586016141e+02 0. 0. 1.</data></intrinsicParam>
+  <distCoeffs type_id="opencv-matrix">
+    <rows>5</rows>
+    <cols>1</cols>
+    <dt>d</dt>
+    <data>
+      5.2788786115331818e-02 -1.2917846712559964e+00
+      -5.0119154555580293e-03 1.7987200838161623e-03
+      1.5497704824018331e+01</data></distCoeffs>
+  <rotationMat type_id="opencv-matrix">
+    <rows>3</rows>
+    <cols>3</cols>
+    <dt>d</dt>
+    <data>
+      2.8999064709409775e-03 9.9283072132339534e-01
+      -1.1949372091840657e-01 -9.8472541415617987e-01
+      2.3638041163645578e-02 1.7250246875011849e-01
+      1.7409034797311310e-01 1.1716826279505911e-01
+      9.7773419135069017e-01</data></rotationMat>
+  <translationVecs>
+    -5.2614768300842798e+01 7.0190865852960513e+01
+    3.7156163320605930e+02</translationVecs></Settings>
+</opencv_storage>

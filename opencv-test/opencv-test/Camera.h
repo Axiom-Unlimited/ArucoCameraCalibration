@@ -19,6 +19,7 @@ class Camera
 private:
 	// flags
 	bool SETTINGS_SET = false;
+
 	// mutexes
 	std::mutex mtx;
 
@@ -31,7 +32,7 @@ private:
 	cv::Mat										_intrinsicParams;
 	cv::Mat										_distCoeffs;
 	cv::Mat										_rotationMat;
-	cv::Mat									_translationVecs;
+	cv::Mat										_translationVecs;
 
 	cv::Mat										_currentFrame;
 

@@ -15,7 +15,11 @@
 
 using math = mathutil::MathUtil;
 
-Camera::Camera(int captureId) : _captureId(captureId)
+Camera::Camera(int captureId, int markerSize, cv::Ptr<cv::aruco::Dictionary> dictionary, cv::Ptr<cv::aruco::DetectorParameters> detector_parameters) :
+								  _aurcoDictionary(dictionary)
+								, _captureId(captureId)	
+								, _markerSize(markerSize)
+								, _detectorParams(detector_parameters)
 								, halt(false)
 								,_videoCapture(cv::VideoCapture(captureId))
 								,_intrinsicParams(cv::Mat(3, 3, CV_32FC1))
@@ -113,6 +117,8 @@ void Camera::setConfigFile(std::string file)
 			return;
 		}
 
+		std::cout << "config file found!!! \n";
+
 		// get the cameras relationship data for all other cameras in the system.
 		cv::FileNode relNodes = _fileStorage["Relations"];
 		for (auto it = relNodes.begin();it != relNodes.end();++it)
@@ -183,11 +189,39 @@ void Camera::capture_frames()
 
 		_videoCapture >> _currentFrame;
 
+		if (SETTINGS_SET)
+		{
+			std::vector<std::vector<cv::Point2f > > corners;
+			std::vector< int > ids;
+			detectMarkers(_currentFrame, _aurcoDictionary, corners, ids, _detectorParams);
+			if (corners.size() > 0 && ids.size() > 0)
+			{
+				std::vector<cv::Vec3d > rvecs, tvecs;
+
+				cv::aruco::estimatePoseSingleMarkers(corners, _markerSize, _intrinsicParams, _distCoeffs, rvecs, tvecs);
+				cv::aruco::drawDetectedMarkers(_currentFrame, corners, ids);
+				cv::Vec3d rsum;
+				for (const auto r : rvecs)
+				{
+					rsum += r;
+				}
+				rsum = rsum / static_cast<double>(rvecs.size());
+
+				cv::Vec3d tsum;
+				for (const auto t : tvecs)
+				{
+					tsum += t;
+				}
+				tsum = tsum / static_cast<double>(tvecs.size());
+				cv::aruco::drawAxis(_currentFrame, _intrinsicParams, _distCoeffs, rsum, tsum, _markerSize);
+			}
+		}
+
 		if(SHOW_CAPTURE)
 		{
 			cv::imshow(std::string("Main Feed Camera: " + std::to_string(_captureId)), _currentFrame);
 		}
-		cv::waitKey(1);
+		cv::waitKey(10);
 	}
 }
 

@@ -10,6 +10,7 @@
 #include <mutex>
 #include <atomic>
 #include <future>
+#include <opencv2/aruco/charuco.hpp>
 
 using namespace structs;
 using namespace cvblobdetector;
@@ -19,6 +20,14 @@ class Camera
 private:
 	// flags
 	bool SETTINGS_SET = false;
+
+	cv::Ptr<cv::aruco::Dictionary> _aurcoDictionary;
+
+	int _markerSize;
+
+	cv::Ptr<cv::aruco::DetectorParameters> _detectorParams;
+
+	
 
 	// mutexes
 	std::mutex mtx;
@@ -44,7 +53,6 @@ private:
 	std::future<void>							_futureTask;
 	std::mutex									_mutex;
 
-
 	void capture_frames();
 
 public:
@@ -53,7 +61,10 @@ public:
 	void settingsSet();
 	bool ifSettingsSet() const;
 	// constructor and destructor
-	Camera(int captureId);
+	Camera(int captureId
+		, int markerSize = 200
+		, cv::Ptr<cv::aruco::Dictionary>  dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50)
+		, cv::Ptr<cv::aruco::DetectorParameters> detector_parameters = cv::aruco::DetectorParameters::create());
 
 	cv::Mat &getIntrinsicParams();
 	cv::Mat &getDistCoeffs();

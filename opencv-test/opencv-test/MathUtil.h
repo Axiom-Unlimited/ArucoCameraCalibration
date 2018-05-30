@@ -122,7 +122,7 @@ namespace mathutil
 			const auto repError = calibrateCameraCharuco(allCharucoCorners, allCharucoIds, charucoboard, imgSize, cameraMatrix, distCo, rvecs, tvecs, params.calibrationFlags);
 			std::cout << "cameraMatrix = " << std::endl << cameraMatrix << std::endl << std::endl;
 			cameraMatrix.copyTo(intrinsicParams);
-			distCoeffs.copyTo(distCoeffs);
+			distCo.copyTo(distCoeffs);
 
 			cv::Mat rsum = cv::Mat::zeros(3, 1, CV_64F);
 			for (const auto r : rvecs)

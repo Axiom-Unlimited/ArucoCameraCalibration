@@ -47,6 +47,13 @@ cv::Mat& Camera::getTransVec()
 	return _translationVecs;
 }
 
+void Camera::getCurrentFrames(cv::Mat& mat)
+{
+	_mutex.lock();
+	_currentFrame.copyTo(mat);
+	_mutex.unlock();
+}
+
 cv::VideoCapture& Camera::getVideoCap()
 {
 	return  _videoCapture;
@@ -187,6 +194,7 @@ void Camera::capture_frames()
 	{
 		if (halt){ continue;}
 
+		_mutex.lock();
 		_videoCapture >> _currentFrame;
 
 		if (SETTINGS_SET)
@@ -216,7 +224,7 @@ void Camera::capture_frames()
 				cv::aruco::drawAxis(_currentFrame, _intrinsicParams, _distCoeffs, rsum, tsum, _markerSize);
 			}
 		}
-
+		_mutex.unlock();
 		if(SHOW_CAPTURE)
 		{
 			cv::imshow(std::string("Main Feed Camera: " + std::to_string(_captureId)), _currentFrame);

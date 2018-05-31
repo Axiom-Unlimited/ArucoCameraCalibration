@@ -71,7 +71,7 @@ public:
 	cv::Mat &getRotMat();
 	cv::Mat &getTransVec();
 
-	bool getCorrectedFrames(cv::Mat &mat);
+	void getCurrentFrames(cv::Mat &mat);
 
 	cv::VideoCapture &getVideoCap();
 

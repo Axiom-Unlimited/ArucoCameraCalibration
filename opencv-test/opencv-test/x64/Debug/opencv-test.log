@@ -10,7 +10,9 @@ d:\projects\motioncapture\opencv-test\opencv-test\camera.h(7): warning C4067: un
 d:\projects\motioncapture\opencv-test\opencv-test\mathutil.h(45): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 d:\projects\motioncapture\opencv-test\opencv-test\mathutil.h(132): warning C4244: 'argument': conversion from 'unsigned __int64' to 'double', possible loss of data
 d:\projects\motioncapture\opencv-test\opencv-test\mathutil.h(141): warning C4244: 'argument': conversion from 'unsigned __int64' to 'double', possible loss of data
-d:\projects\motioncapture\opencv-test\opencv-test\camera.cpp(201): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\projects\motioncapture\opencv-test\opencv-test\camera.cpp(216): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\projects\motioncapture\opencv-test\opencv-test\camera.cpp(209): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\projects\motioncapture\opencv-test\opencv-test\camera.cpp(224): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating Code...
+  Skipping... (no relevant changes detected)
+  CameraManager.cpp
   opencv-test.vcxproj -> D:\Projects\MotionCapture\opencv-test\x64\Debug\opencv-test.exe

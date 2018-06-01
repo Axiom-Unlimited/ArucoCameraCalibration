@@ -2,13 +2,11 @@
 
 #include "opencv2/core.hpp"
 #include <opencv2/videoio.hpp>
-#include <opencv2/imgproc.hpp>
 #include <memory>
 #include "DataStructs.h";
 #include <thread>
 #include "CVBlobDetector.h"
 #include <mutex>
-#include <atomic>
 #include <future>
 #include <opencv2/aruco/charuco.hpp>
 
@@ -26,8 +24,6 @@ private:
 	int _markerSize;
 
 	cv::Ptr<cv::aruco::DetectorParameters> _detectorParams;
-
-	
 
 	// mutexes
 	std::mutex mtx;

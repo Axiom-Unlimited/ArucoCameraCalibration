@@ -11,7 +11,7 @@
 #include "opencv2/aruco.hpp"
 
 #define SHOW_BLOBS 1
-#define SHOW_CAPTURE 1
+#define SHOW_CAPTURE 0
 
 using math = mathutil::MathUtil;
 

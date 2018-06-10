@@ -7,8 +7,7 @@ namespace structs
 	struct RelationToNCamera
 	{
 		int Designator;
-		cv::Mat RotationTo;
-		cv::Mat TranslationTo;
+		cv::Mat HomogeneousTransformTo;
 	};
 
 	template<typename T>

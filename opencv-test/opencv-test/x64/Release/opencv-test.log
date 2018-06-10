@@ -1,11 +1,12 @@
-﻿  Camera.cpp
+﻿  stdafx.cpp
+  Camera.cpp
 d:\projects\motioncapture\opencv-test\opencv-test\Camera.h(6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   Info: Boost.Config is older than your compiler version - probably nothing bad will happen - but you may wish to look for an update Boost version.  Define BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE to suppress this message.
 d:\projects\motioncapture\opencv-test\opencv-test\MathUtil.h(45): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 d:\projects\motioncapture\opencv-test\opencv-test\MathUtil.h(132): warning C4244: 'argument': conversion from 'unsigned __int64' to 'double', possible loss of data
 d:\projects\motioncapture\opencv-test\opencv-test\MathUtil.h(141): warning C4244: 'argument': conversion from 'unsigned __int64' to 'double', possible loss of data
-Camera.cpp(209): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-Camera.cpp(224): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+Camera.cpp(220): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+Camera.cpp(235): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   CameraManager.cpp
 d:\projects\motioncapture\opencv-test\opencv-test\Camera.h(6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   opencv-test.cpp
@@ -14,9 +15,8 @@ d:\projects\motioncapture\opencv-test\opencv-test\MathUtil.h(45): warning C4244:
 d:\projects\motioncapture\opencv-test\opencv-test\MathUtil.h(132): warning C4244: 'argument': conversion from 'unsigned __int64' to 'double', possible loss of data
 d:\projects\motioncapture\opencv-test\opencv-test\MathUtil.h(141): warning C4244: 'argument': conversion from 'unsigned __int64' to 'double', possible loss of data
   Info: Boost.Config is older than your compiler version - probably nothing bad will happen - but you may wish to look for an update Boost version.  Define BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE to suppress this message.
+  targetver.cpp
   Generating code
-  126 of 2162 functions ( 5.8%) were compiled, the rest were copied from previous compilation.
-    124 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+  All 2177 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   opencv-test.vcxproj -> D:\Projects\MotionCapture\opencv-test\x64\Release\opencv-test.exe

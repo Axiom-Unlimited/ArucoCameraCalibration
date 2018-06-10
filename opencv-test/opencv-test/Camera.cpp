@@ -11,7 +11,7 @@
 #include "opencv2/aruco.hpp"
 
 #define SHOW_BLOBS 1
-#define SHOW_CAPTURE 0
+#define SHOW_CAPTURE 1
 
 using math = mathutil::MathUtil;
 
@@ -23,6 +23,7 @@ Camera::Camera(int captureId, int markerSize, cv::Ptr<cv::aruco::Dictionary> dic
 								, halt(false)
 								,_videoCapture(cv::VideoCapture(captureId))
 								,_intrinsicParams(cv::Mat(3, 3, CV_32FC1))
+								,_currentHomogeneousCoord(cv::Mat(4,4,CV_64F))
 {
 	_futureTask = std::async(std::launch::async | std::launch::deferred, &Camera::capture_frames, this);
 }
@@ -52,6 +53,11 @@ void Camera::getCurrentFrames(cv::Mat& mat)
 	_mutex.lock();
 	_currentFrame.copyTo(mat);
 	_mutex.unlock();
+}
+
+std::vector<cv::Mat>& Camera::getMarkerTransfroms()
+{
+	return _homogeneousTransforms;
 }
 
 cv::VideoCapture& Camera::getVideoCap()
@@ -136,8 +142,7 @@ void Camera::setConfigFile(std::string file)
 			{
 				RelationToNCamera relToCam;
 				node["Designator"] >> relToCam.Designator;
-				node["RotationTo"] >> relToCam.RotationTo;
-				node["TranslationTo"] >> relToCam.TranslationTo;
+				node["HomogeneousTransformTo"] >> relToCam.HomogeneousTransformTo;
 				_cameraRelations.push_back(relToCam);
 			}
 		}
@@ -163,8 +168,7 @@ void Camera::saveConfig()
 		std::stringstream ss;
 		ss << "CameraRelation" << std::to_string(it->Designator);
 		_fileStorage << ss.str();
-		_fileStorage << "{" << "Designator" << it->Designator << "RotationTo" << it->RotationTo;
-		_fileStorage << "TranslationTo" << it->TranslationTo;
+		_fileStorage << "{" << "Designator" << it->Designator << "HomogeneousTransformTo" << it->HomogeneousTransformTo;
 	}
 	_fileStorage << "}";
 	_fileStorage << "Settings" << "{";
@@ -187,6 +191,15 @@ void Camera::resumeThread()
 	halt = false;
 }
 
+void Camera::captureMarkerDynamics()
+{
+	_mutex.lock();
+	std::cout << "new transform \n" << _currentHomogeneousCoord << "\n pushed back!!!! \n";
+	_homogeneousTransforms.push_back(std::move(_currentHomogeneousCoord));
+	std::cout << "camera: " << _captureId << " homogeneous transform list is: " << _homogeneousTransforms.size() << std::endl;
+	_mutex.unlock();
+}
+
 // main thread for the Camera
 void Camera::capture_frames()
 {
@@ -196,18 +209,19 @@ void Camera::capture_frames()
 
 		_mutex.lock();
 		_videoCapture >> _currentFrame;
-
+		cv::Mat displayFrame;
+		_currentFrame.copyTo(displayFrame);
 		if (SETTINGS_SET)
 		{
 			std::vector<std::vector<cv::Point2f > > corners;
 			std::vector< int > ids;
-			detectMarkers(_currentFrame, _aurcoDictionary, corners, ids, _detectorParams);
+			detectMarkers(displayFrame, _aurcoDictionary, corners, ids, _detectorParams);
 			if (corners.size() > 0 && ids.size() > 0)
 			{
 				std::vector<cv::Vec3d > rvecs, tvecs;
 
 				cv::aruco::estimatePoseSingleMarkers(corners, _markerSize, _intrinsicParams, _distCoeffs, rvecs, tvecs);
-				cv::aruco::drawDetectedMarkers(_currentFrame, corners, ids);
+				cv::aruco::drawDetectedMarkers(displayFrame, corners, ids);
 				cv::Vec3d rsum;
 				for (const auto r : rvecs)
 				{
@@ -221,13 +235,22 @@ void Camera::capture_frames()
 					tsum += t;
 				}
 				tsum = tsum / static_cast<double>(tvecs.size());
-				cv::aruco::drawAxis(_currentFrame, _intrinsicParams, _distCoeffs, rsum, tsum, _markerSize);
+				cv::aruco::drawAxis(displayFrame, _intrinsicParams, _distCoeffs, rsum, tsum, _markerSize);
+
+				cv::Mat homogTrans = cv::Mat::zeros(4, 4, CV_64F);
+				cv::Mat tmp;
+				cv::Rodrigues(rsum, tmp);
+				tmp.copyTo(homogTrans(cv::Rect(0, 0, tmp.rows, tmp.cols)));
+				homogTrans.at<double>(0, 3) = tsum[0];
+				homogTrans.at<double>(1, 3) = tsum[1];
+				homogTrans.at<double>(2, 3) = tsum[2];
+				homogTrans.copyTo(_currentHomogeneousCoord);
 			}
 		}
 		_mutex.unlock();
 		if(SHOW_CAPTURE)
 		{
-			cv::imshow(std::string("Main Feed Camera: " + std::to_string(_captureId)), _currentFrame);
+			cv::imshow(std::string("Main Feed Camera: " + std::to_string(_captureId)), displayFrame);
 		}
 		cv::waitKey(10);
 	}

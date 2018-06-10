@@ -32,14 +32,17 @@ private:
 	bool halt;
 	cv::VideoCapture							_videoCapture;
 
-	std::vector<std::shared_ptr<Camera>>		_pCameras{};
+	std::vector<cv::Mat>						_homogeneousTransforms;
 
 	cv::Mat										_intrinsicParams;
+	cv::Mat										_currentHomogeneousCoord;
 	cv::Mat										_distCoeffs;
 	cv::Mat										_rotationMat;
 	cv::Mat										_translationVecs;
 
 	cv::Mat										_currentFrame;
+
+	
 
 	std::vector<RelationToNCamera>				_cameraRelations{};	
 
@@ -68,6 +71,8 @@ public:
 	cv::Mat &getTransVec();
 
 	void getCurrentFrames(cv::Mat &mat);
+	
+	std::vector<cv::Mat>& getMarkerTransfroms();
 
 	cv::VideoCapture &getVideoCap();
 
@@ -92,4 +97,6 @@ public:
 	void haltThread() ;
 
 	void resumeThread();
+
+	void captureMarkerDynamics();
 };
